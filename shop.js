@@ -14,6 +14,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+
 const \$ = selector => document.querySelector(selector);
 const money = amount => "AED " + amount.toLocaleString("en-US");
 
