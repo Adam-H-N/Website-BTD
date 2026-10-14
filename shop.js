@@ -205,5 +205,4 @@ async function fetchStoreProducts() {
   showToast("Demo checkout — no payment taken.");
 });
 
-// Run fetch after everything is defined
 fetchStoreProducts();
