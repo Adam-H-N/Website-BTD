@@ -14,8 +14,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-const $ = function(selector) { return document.querySelector(selector); };
-const money = function(amount) { return "AED " + amount.toLocaleString("en-US"); };
+const $ = function(selector) {
+  return document.querySelector(selector);
+};
+
+const money = function(amount) {
+  return "AED " + amount.toLocaleString("en-US");
+};
 
 let activeFilter = "All";
 const cart = {};
@@ -25,7 +30,7 @@ function characterArt(figure) {
   if (figure.image) {
     return '<img class="product-image" src="' + figure.image + '" alt="' + figure.name + ' figure">';
   }
-  return '<div class="figure-art"><span>' + (figure.emoji || '✦') + '</span></div>';
+  return '<div class="figure-art"><span>' + (figure.emoji || "✦") + "</span></div>";
 }
 
 function renderProducts() {
@@ -39,7 +44,7 @@ function renderProducts() {
         : figure.tag === activeFilter);
 
     const matchesSearch =
-      (String(figure.name || '') + " " + String(figure.series || '') + " " + String(figure.tag || ''))
+      (String(figure.name || "") + " " + String(figure.series || "") + " " + String(figure.tag || ""))
         .toLowerCase().includes(query);
 
     return matchesFilter && matchesSearch;
@@ -47,20 +52,20 @@ function renderProducts() {
 
   $("#products").innerHTML = filtered.map(function(figure) {
     return '<article class="product">' +
-      '<div class="product-art" style="background:' + (figure.tone || '#30213d') + '">' +
-        '<span class="tag">' + (figure.tag || 'Item') + '</span>' +
+      '<div class="product-art" style="background:' + (figure.tone || "#30213d") + '">' +
+        '<span class="tag">' + (figure.tag || "Item") + "</span>" +
         '<button class="add-button" data-add="' + figure.id + '">+ Add</button>' +
         characterArt(figure) +
-      '</div>' +
+      "</div>" +
       '<div class="product-info">' +
-        '<span class="series">' + (figure.series || '') + '</span>' +
-        '<h3>' + figure.name + '</h3>' +
+        '<span class="series">' + (figure.series || "") + "</span>" +
+        "<h3>" + figure.name + "</h3>" +
         '<div class="product-bottom">' +
-          '<strong>' + money(Number(figure.price)) + '</strong>' +
-          '<span>' + (figure.emoji || '✦') + '</span>' +
-        '</div>' +
-      '</div>' +
-    '</article>';
+          "<strong>" + money(Number(figure.price)) + "</strong>" +
+          "<span>" + (figure.emoji || "✦") + "</span>" +
+        "</div>" +
+      "</div>" +
+    "</article>";
   }).join("");
 
   $("#empty").hidden = filtered.length > 0;
@@ -89,18 +94,18 @@ function updateCart() {
     total += Number(figure.price) * quantity;
 
     return '<div class="cart-row">' +
-      '<span class="cart-emoji" style="background:' + (figure.tone || '#30213d') + '">' + (figure.emoji || '✦') + '</span>' +
+      '<span class="cart-emoji" style="background:' + (figure.tone || "#30213d") + '">' + (figure.emoji || "✦") + "</span>" +
       '<div class="cart-description">' +
-        '<strong>' + figure.name + '</strong>' +
-        '<small>' + money(Number(figure.price)) + ' each</small>' +
+        "<strong>" + figure.name + "</strong>" +
+        "<small>" + money(Number(figure.price)) + " each</small>" +
         '<div class="quantity">' +
           '<button data-qty="' + id + '" data-delta="-1">−</button>' +
-          '<span>' + quantity + '</span>' +
+          "<span>" + quantity + "</span>" +
           '<button data-qty="' + id + '" data-delta="1">+</button>' +
-        '</div>' +
-      '</div>' +
-      '<strong>' + money(Number(figure.price) * quantity) + '</strong>' +
-    '</div>';
+        "</div>" +
+      "</div>" +
+      "<strong>" + money(Number(figure.price) * quantity) + "</strong>" +
+    "</div>";
   }).join("");
 
   if (!entries.length) {
@@ -118,7 +123,7 @@ function showToast(message) {
 
 async function fetchStoreProducts() {
   try {
-    const snapshot = await get(ref(db, 'products'));
+    const snapshot = await get(ref(db, "products"));
     figures = [];
     if (snapshot.exists()) {
       snapshot.forEach(function(childSnapshot) {
