@@ -23,14 +23,8 @@ let figures = [];
 
 function characterArt(figure) {
   if (figure.image) {
-    return `
-      <img
-        class="product-image"
-        src="${figure.image}"
-        alt="${figure.name} anime figure"
-      >`;
+    return `<img class="product-image" src="${figure.image}" alt="${figure.name} anime figure">`;
   }
-
   return `
     <div class="figure-art" style="--hair:${figure.hair || '#24172d'};--coat:${figure.coat || '#ff5b7d'}">
       <div class="figure-hair"></div>
@@ -63,9 +57,7 @@ function renderProducts() {
     <article class="product">
       <div class="product-art" style="--tone:${figure.tone || '#30213d'}">
         <span class="tag">${figure.tag || 'Item'}</span>
-        <button class="add-button" data-add="${figure.id}">
-          + Add
-        </button>
+        <button class="add-button" data-add="${figure.id}">+ Add</button>
         ${characterArt(figure)}
       </div>
       <div class="product-info">
@@ -121,8 +113,7 @@ function updateCart() {
   }).join("");
 
   if (!entries.length) {
-    \$("#cartItems").innerHTML =
-      '<p class="empty">Your bag is waiting for its first figure ✦</p>';
+    \$("#cartItems").innerHTML = '<p class="empty">Your bag is waiting for its first figure ✦</p>';
   }
 
   \$("#subtotal").textContent = money(total);
