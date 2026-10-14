@@ -14,8 +14,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-const \$ = selector => document.querySelector(selector);
-const money = amount => "AED " + amount.toLocaleString("en-US");
+const $ = function(selector) { return document.querySelector(selector); };
+const money = function(amount) { return "AED " + amount.toLocaleString("en-US"); };
 
 let activeFilter = "All";
 const cart = {};
@@ -29,9 +29,9 @@ function characterArt(figure) {
 }
 
 function renderProducts() {
-  const query = \$("#search").value.trim().toLowerCase();
+  const query = $("#search").value.trim().toLowerCase();
 
-  const filtered = figures.filter(figure => {
+  const filtered = figures.filter(function(figure) {
     const matchesFilter =
       activeFilter === "All" ||
       (activeFilter === "Under AED 200"
@@ -45,27 +45,27 @@ function renderProducts() {
     return matchesFilter && matchesSearch;
   });
 
-  \$("#products").innerHTML = filtered.map(figure => `
-    <article class="product">
-      <div class="product-art" style="--tone:${figure.tone || '#30213d'}">
-        <span class="tag">${figure.tag || 'Item'}</span>
-        <button class="add-button" data-add="${figure.id}">+ Add</button>
-        ${characterArt(figure)}
-      </div>
-      <div class="product-info">
-        <span class="series">${figure.series || ''}</span>
-        <h3>${figure.name}</h3>
-        <div class="product-bottom">
-          <strong>${money(Number(figure.price))}</strong>
-          <span>${figure.emoji || '✦'}</span>
-        </div>
-      </div>
-    </article>
-  `).join("");
+  $("#products").innerHTML = filtered.map(function(figure) {
+    return '<article class="product">' +
+      '<div class="product-art" style="background:' + (figure.tone || '#30213d') + '">' +
+        '<span class="tag">' + (figure.tag || 'Item') + '</span>' +
+        '<button class="add-button" data-add="' + figure.id + '">+ Add</button>' +
+        characterArt(figure) +
+      '</div>' +
+      '<div class="product-info">' +
+        '<span class="series">' + (figure.series || '') + '</span>' +
+        '<h3>' + figure.name + '</h3>' +
+        '<div class="product-bottom">' +
+          '<strong>' + money(Number(figure.price)) + '</strong>' +
+          '<span>' + (figure.emoji || '✦') + '</span>' +
+        '</div>' +
+      '</div>' +
+    '</article>';
+  }).join("");
 
-  \$("#empty").hidden = filtered.length > 0;
+  $("#empty").hidden = filtered.length > 0;
 
-  document.querySelectorAll("[data-filter]").forEach(button => {
+  document.querySelectorAll("[data-filter]").forEach(function(button) {
     button.classList.toggle(
       "active",
       button.dataset.filter === activeFilter
@@ -74,47 +74,46 @@ function renderProducts() {
 }
 
 function updateCart() {
-  const entries = Object.entries(cart).filter(([, quantity]) => quantity > 0);
-  const count = entries.reduce((sum, [, quantity]) => sum + quantity, 0);
+  const entries = Object.entries(cart).filter(function(entry) { return entry[1] > 0; });
+  const count = entries.reduce(function(sum, entry) { return sum + entry[1]; }, 0);
 
-  \$("#cartCount").textContent = count;
+  $("#cartCount").textContent = count;
 
   let total = 0;
 
-  \$("#cartItems").innerHTML = entries.map(([id, quantity]) => {
-    const figure = figures.find(item => String(item.id) === String(id));
+  $("#cartItems").innerHTML = entries.map(function(entry) {
+    const id = entry[0];
+    const quantity = entry[1];
+    const figure = figures.find(function(item) { return String(item.id) === String(id); });
     if (!figure) return "";
     total += Number(figure.price) * quantity;
 
-    return `
-      <div class="cart-row">
-        <span class="cart-emoji" style="background:${figure.tone || '#30213d'}">
-          ${figure.emoji || '✦'}
-        </span>
-        <div class="cart-description">
-          <strong>${figure.name}</strong>
-          <small>${money(Number(figure.price))} each</small>
-          <div class="quantity">
-            <button data-qty="${id}" data-delta="-1">−</button>
-            <span>${quantity}</span>
-            <button data-qty="${id}" data-delta="1">+</button>
-          </div>
-        </div>
-        <strong>${money(Number(figure.price) * quantity)}</strong>
-      </div>`;
+    return '<div class="cart-row">' +
+      '<span class="cart-emoji" style="background:' + (figure.tone || '#30213d') + '">' + (figure.emoji || '✦') + '</span>' +
+      '<div class="cart-description">' +
+        '<strong>' + figure.name + '</strong>' +
+        '<small>' + money(Number(figure.price)) + ' each</small>' +
+        '<div class="quantity">' +
+          '<button data-qty="' + id + '" data-delta="-1">−</button>' +
+          '<span>' + quantity + '</span>' +
+          '<button data-qty="' + id + '" data-delta="1">+</button>' +
+        '</div>' +
+      '</div>' +
+      '<strong>' + money(Number(figure.price) * quantity) + '</strong>' +
+    '</div>';
   }).join("");
 
   if (!entries.length) {
-    \$("#cartItems").innerHTML = '<p class="empty">Your bag is waiting for its first figure ✦</p>';
+    $("#cartItems").innerHTML = '<p class="empty">Your bag is waiting for its first figure ✦</p>';
   }
 
-  \$("#subtotal").textContent = money(total);
+  $("#subtotal").textContent = money(total);
 }
 
 function showToast(message) {
-  \$("#toast").textContent = message;
-  \$("#toast").classList.add("visible");
-  setTimeout(() => \$("#toast").classList.remove("visible"), 2200);
+  $("#toast").textContent = message;
+  $("#toast").classList.add("visible");
+  setTimeout(function() { $("#toast").classList.remove("visible"); }, 2200);
 }
 
 async function fetchStoreProducts() {
@@ -122,12 +121,9 @@ async function fetchStoreProducts() {
     const snapshot = await get(ref(db, 'products'));
     figures = [];
     if (snapshot.exists()) {
-      snapshot.forEach((childSnapshot) => {
+      snapshot.forEach(function(childSnapshot) {
         const productData = childSnapshot.val();
-        figures.push({
-          id: childSnapshot.key,
-          ...productData
-        });
+        figures.push(Object.assign({ id: childSnapshot.key }, productData));
       });
     }
   } catch (err) {
@@ -137,7 +133,7 @@ async function fetchStoreProducts() {
   updateCart();
 }
 
-\$("#products").addEventListener("click", event => {
+$("#products").addEventListener("click", function(event) {
   const button = event.target.closest("[data-add]");
   if (!button) return;
 
@@ -145,11 +141,11 @@ async function fetchStoreProducts() {
   cart[id] = (cart[id] || 0) + 1;
   updateCart();
 
-  const figure = figures.find(item => String(item.id) === String(id));
-  if (figure) showToast(`${figure.name} added to your bag!`);
+  const figure = figures.find(function(item) { return String(item.id) === String(id); });
+  if (figure) showToast(figure.name + " added to your bag!");
 });
 
-\$("#filters").addEventListener("click", event => {
+$("#filters").addEventListener("click", function(event) {
   const button = event.target.closest("[data-filter]");
   if (!button) return;
 
@@ -157,23 +153,23 @@ async function fetchStoreProducts() {
   renderProducts();
 });
 
-\$("#search").addEventListener("input", renderProducts);
+$("#search").addEventListener("input", renderProducts);
 
-\$("#cartOpen").addEventListener("click", () => {
-  \$("#overlay").classList.add("open");
+$("#cartOpen").addEventListener("click", function() {
+  $("#overlay").classList.add("open");
 });
 
-\$("#cartClose").addEventListener("click", () => {
-  \$("#overlay").classList.remove("open");
+$("#cartClose").addEventListener("click", function() {
+  $("#overlay").classList.remove("open");
 });
 
-\$("#overlay").addEventListener("click", event => {
-  if (event.target === \$("#overlay")) {
-    \$("#overlay").classList.remove("open");
+$("#overlay").addEventListener("click", function(event) {
+  if (event.target === $("#overlay")) {
+    $("#overlay").classList.remove("open");
   }
 });
 
-\$("#cartItems").addEventListener("click", event => {
+$("#cartItems").addEventListener("click", function(event) {
   const button = event.target.closest("[data-qty]");
   if (!button) return;
 
@@ -184,7 +180,7 @@ async function fetchStoreProducts() {
   updateCart();
 });
 
-\$("#checkout").addEventListener("click", () => {
+$("#checkout").addEventListener("click", function() {
   showToast("Demo checkout — no payment taken.");
 });
 
