@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard — BTD District</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="header">
+    <a class="brand" href="index.html">✦ BTD District Admin</a>
+    <nav><a href="index.html">← Back to Store</a></nav>
+  </header>
+
+  <main class="container" style="max-width: 800px; padding: 40px 20px;">
+    <!-- Login Screen -->
+    <div id="authSection" class="info-card">
+      <h2>Admin Login</h2>
+      <p>Log in to manage your daily vault items.</p>
+      <form id="loginForm" style="display:grid; gap:12px; margin-top:15px;">
+        <input type="email" id="adminEmail" placeholder="Admin Email" required style="padding:11px; background:var(--bg); border:1px solid var(--line); color:var(--text); border-radius:10px;">
+        <input type="password" id="adminPassword" placeholder="Password" required style="padding:11px; background:var(--bg); border:1px solid var(--line); color:var(--text); border-radius:10px;">
+        <button class="primary" type="submit">Log In</button>
+      </form>
+    </div>
+
+    <!-- Dashboard Panel (Hidden until logged in) -->
+    <div id="dashboardSection" hidden>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h1>Manage Inventory</h1>
+        <button id="logoutBtn" class="filter" style="background:var(--surface2);">Log Out</button>
+      </div>
+
+      <!-- Add Product Form -->
+      <form id="addProductForm" class="info-card" style="display:grid; gap:12px; margin-bottom:40px;">
+        <h3>Add New Figure</h3>
+        <input type="text" id="pName" placeholder="Figure Name (e.g. Zoro)" required style="padding:11px; background:var(--bg); border:1px solid var(--line); color:var(--text); border-radius:10px;">
+        <input type="text" id="pSeries" placeholder="Series (e.g. One Piece)" required style="padding:11px; background:var(--bg); border:1px solid var(--line); color:var(--text); border-radius:10px;">
+        <input type="number" id="pPrice" placeholder="Price in AED (e.g. 199)" required style="padding:11px; background:var(--bg); border:1px solid var(--line); color:var(--text); border-radius:10px;">
+        <input type="text" id="pTag" placeholder="Tag (e.g. New drop, Best seller)" required style="padding:11px; background:var(--bg); border:1px solid var(--line); color:var(--text); border-radius:10px;">
+        <input type="text" id="pImage" placeholder="Image Filename or URL (e.g. zoro.png)" required style="padding:11px; background:var(--bg); border:1px solid var(--line); color:var(--text); border-radius:10px;">
+        <input type="text" id="pStripeLink" placeholder="Stripe Payment Link URL (optional)" style="padding:11px; background:var(--bg); border:1px solid var(--line); color:var(--text); border-radius:10px;">
+        <button class="primary" type="submit">Publish to Store ↗</button>
+      </form>
+
+      <h3>Live Products Inventory</h3>
+      <div id="adminProductList" style="display:grid; gap:10px; margin-top:15px;"></div>
+    </div>
+  </main>
+
+  <!-- Firebase SDKs -->
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { getDatabase, ref, push, set, remove, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDfc_66w7wE1pJ0q-njX6tQVFM1IR_l9zw",
+    authDomain: "btd-anime.firebaseapp.com",
+    databaseURL: "https://btd-anime-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "btd-anime",
+    storageBucket: "btd-anime.firebasestorage.app",
+    messagingSenderId: "822260127443",
+    appId: "1:822260127443:web:1300428ba96f30c938a626"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+
+  // Login Handling
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("adminEmail").value;
+    const pass = document.getElementById("adminPassword").value;
+    try {
+      await signInWithEmailAndPassword(auth, email, pass);
+    } catch (err) {
+      alert("Login failed: " + err.message);
+    }
+  });
+
+  document.getElementById("logoutBtn").addEventListener("click", () => signOut(auth));
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      document.getElementById("authSection").hidden = true;
+      document.getElementById("dashboardSection").hidden = false;
+      loadAdminProducts();
+    } else {
+      document.getElementById("authSection").hidden = false;
+      document.getElementById("dashboardSection").hidden = true;
+    }
+  });
+
+  // Add Product to Realtime Database
+  document.getElementById("addProductForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      const productsRef = ref(db, 'products');
+      const newProductRef = push(productsRef);
+      
+      await set(newProductRef, {
+        id: newProductRef.key,
+        name: document.getElementById("pName").value,
+        series: document.getElementById("pSeries").value,
+        price: Number(document.getElementById("pPrice").value),
+        tag: document.getElementById("pTag").value,
+        image: document.getElementById("pImage").value,
+        stripeLink: document.getElementById("pStripeLink").value || "#",
+        createdAt: Date.now()
+      });
+
+      alert("Product added successfully!");
+      e.target.reset();
+      loadAdminProducts();
+    } catch (err) {
+      alert("Error adding product: " + err.message);
+    }
+  });
+
+  // Load Products into Admin View with Delete Options
+  async function loadAdminProducts() {
+    const container = document.getElementById("adminProductList");
+    container.innerHTML = "<p>Loading inventory...</p>";
+    
+    const snapshot = await get(ref(db, 'products'));
+    
+    if (!snapshot.exists()) {
+      container.innerHTML = "<p class='empty'>No items in database yet.</p>";
+      return;
+    }
+
+    container.innerHTML = "";
+    snapshot.forEach((childSnapshot) => {
+      const prod = childSnapshot.val();
+      const id = childSnapshot.key;
+
+      const row = document.createElement("div");
+      row.className = "info-card";
+      row.style.display = "flex";
+      row.style.justifyContent = "space-between";
+      row.style.alignItems = "center";
+      row.innerHTML = `
+        <div>
+          <strong>${prod.name}</strong> (${prod.series})<br>
+          <small>AED ${prod.price} · ${prod.tag}</small>
+        </div>
+        <button class="filter" style="background:#ff4e75; color:white; border:0;" data-delete="${id}">Delete</button>
+      `;
+      
+      row.querySelector("[data-delete]").addEventListener("click", async () => {
+        if (confirm(`Are you sure you want to delete ${prod.name}?`)) {
+          await remove(ref(db, `products/${id}`));
+          loadAdminProducts();
+        }
+      });
+
+      container.appendChild(row);
+    });
+  }
+</script>
+</body>
+</html>

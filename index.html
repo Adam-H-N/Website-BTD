@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111016">
+  <title>BTD District — Anime Figures</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="figures.js" defer></script>
+  <script src="shop.js" defer></script>
+</head>
+<body>
+  <div class="topline"></div>
+
+  <header class="header">
+    <a class="brand" href="index.html">
+  
+    <a class="brand" href="index.html" aria-label="BTD District home">
+    <img class="brand-logo" src="logo.jpeg" alt="BTD District logo">
+    <span>BTD District</span>
+  </a>
+
+    <nav>
+      <a class="active" href="index.html">Shop</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <label class="search">
+      <span>⌕</span>
+      <input id="search" type="search" placeholder="Search figures…">
+    </label>
+
+    <button class="bag" id="cartOpen">
+      Bag <span id="cartCount">0</span>
+    </button>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">YOUR NEXT GRAIL AWAITS</span>
+        <h1>Fictional worlds.<br><em>Real obsession.</em></h1>
+        <p>
+          Bring your favourite characters home. Discover display-worthy
+          figures, iconic heroes and collectibles made for your shelf.
+        </p>
+        <a class="primary" href="#shop">Explore the collection ↗</a>
+        <small>✦ Curated for collectors, made for your shelf.</small>
+      </div>
+    <div class="hero-art">
+        <div class="orbit"></div>
+        <div class="hero-character">
+          <img
+              class="hero-product-image"
+              src="trio.png"
+              alt="Collector edition anime figure"
+            >
+        </div>
+        <span class="art-label">THE COLLECTOR EDITION</span>
+        <span class="art-price">From AED 149</span>
+      </div>
+    </section>
+    
+
+    <section id="shop" class="shop-section">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">THE VAULT COLLECTION</span>
+          <h2>Find your main character.</h2>
+          <p>Small details. Big main-character energy.</p>
+        </div>
+      </div>
+
+      <div class="filters" id="filters">
+        <button class="filter active" data-filter="All">All figures</button>
+        <button class="filter" data-filter="New drop">New drops</button>
+        <button class="filter" data-filter="Best seller">Best sellers</button>
+        <button class="filter" data-filter="Under AED 200">Under AED 200</button>
+      </div>
+
+      <div id="products" class="product-grid"></div>
+      <p id="empty" class="empty" hidden>
+        No figures found. Try another search ✦
+      </p>
+    </section>
+
+    <section class="promo">
+      <div>
+        <h2>Your shelf called.</h2>
+        <p>It wants a glow-up. Find your next favourite.</p>
+      </div>
+      <a class="primary light-button" href="gallery.html">Explore the gallery ↗</a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <a class="brand" href="index.html">✦ BTD District</a>
+    <span>Demo store · Prices shown in AED</span>
+    <span>© 2026 BTD District</span>
+  </footer>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <div class="overlay" id="overlay">
+    <aside class="cart-panel">
+      <div class="cart-heading">
+        <h2>Your vault bag</h2>
+        <button class="close" id="cartClose" aria-label="Close bag">×</button>
+      </div>
+      <div id="cartItems" class="cart-items"></div>
+      <div class="cart-total">
+        <div class="total-line">
+          <span>Subtotal</span>
+          <strong id="subtotal">AED 0</strong>
+        </div>
+        <button class="primary full-width" id="checkout">Demo checkout ↗</button>
+        <small>Demo only — no payment will be taken.</small>
+      </div>
+    </aside>
+  </div>
+</body>
+</html>

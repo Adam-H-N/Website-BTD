@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact — BTD District</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="header">
+    <a class="brand" href="index.html">✦ BTD District</a>
+    <nav>
+      <a href="index.html">Shop</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="about.html">About</a>
+      <a class="active" href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="page-heading">
+      <span class="eyebrow">SAY HELLO</span>
+      <h1>Let's talk anime.</h1>
+      <p class="content-copy">
+        Have a question about a figure, a collection idea or a possible
+        collaboration? Send us a message using the demo form below.
+      </p>
+    </section>
+
+    <form class="contact-form" id="contactForm">
+      <label>
+        Your name
+        <input name="name" required placeholder="Your name">
+      </label>
+
+      <label>
+        Email address
+        <input name="email" type="email" required placeholder="you@example.com">
+      </label>
+
+      <label>
+        Message
+        <textarea name="message" required placeholder="Tell us what's on your mind…"></textarea>
+      </label>
+
+      <button class="primary" type="submit">Send message ↗</button>
+      <p id="formMessage" class="content-copy" role="status"></p>
+    </form>
+  </main>
+
+  <footer class="footer">
+    <a class="brand" href="index.html">✦ BTD District</a>
+    <span>Demo store · AED</span>
+    <span>© 2026 BTD District</span>
+  </footer>
+
+  <script>
+    document.getElementById("contactForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const name = new FormData(event.currentTarget).get("name");
+      document.getElementById("formMessage").textContent =
+        `Thanks, ${name}! This demo does not send email yet.`;
+      event.currentTarget.reset();
+    });
+  </script>
+</body>
+</html>
