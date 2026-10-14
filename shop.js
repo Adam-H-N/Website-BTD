@@ -14,13 +14,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-
-const $ = selector => document.querySelector(selector);
+const \$ = selector => document.querySelector(selector);
 const money = amount => "AED " + amount.toLocaleString("en-US");
 
 let activeFilter = "All";
 const cart = {};
 let figures = [];
+
 function characterArt(figure) {
   if (figure.image) {
     return '<img class="product-image" src="' + figure.image + '" alt="' + figure.name + ' figure">';
@@ -39,7 +39,7 @@ function renderProducts() {
         : figure.tag === activeFilter);
 
     const matchesSearch =
-      `${figure.name || ''} ${figure.series || ''} ${figure.tag || ''}`
+      (String(figure.name || '') + " " + String(figure.series || '') + " " + String(figure.tag || ''))
         .toLowerCase().includes(query);
 
     return matchesFilter && matchesSearch;
