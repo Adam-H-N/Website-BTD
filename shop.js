@@ -21,14 +21,18 @@ let activeFilter = "All";
 const cart = {};
 let figures = [];
 
-// Fetch live products from Firebase Realtime Database
 async function fetchStoreProducts() {
   try {
     const snapshot = await get(ref(db, 'products'));
     figures = [];
     if (snapshot.exists()) {
       snapshot.forEach((childSnapshot) => {
-        figures.push(childSnapshot.val());
+        // This grabs the product data and includes its unique Firebase key as 'id'
+        const productData = childSnapshot.val();
+        figures.push({
+          id: childSnapshot.key,
+          ...productData
+        });
       });
     }
   } catch (err) {
@@ -38,7 +42,6 @@ async function fetchStoreProducts() {
   updateCart();
 }
 
-// ... Keep your characterArt, renderProducts, updateCart, and event listener functions below ...
+// ... keep all your other functions (characterArt, renderProducts, updateCart, event listeners) below this ...
 
-// Initialize store fetch on page load
 fetchStoreProducts();
