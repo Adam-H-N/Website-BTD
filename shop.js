@@ -21,27 +21,6 @@ let activeFilter = "All";
 const cart = {};
 let figures = [];
 
-// Fetch live products from Firebase Realtime Database
-async function fetchStoreProducts() {
-  try {
-    const snapshot = await get(ref(db, 'products'));
-    figures = [];
-    if (snapshot.exists()) {
-      snapshot.forEach((childSnapshot) => {
-        const productData = childSnapshot.val();
-        figures.push({
-          id: childSnapshot.key,
-          ...productData
-        });
-      });
-    }
-  } catch (err) {
-    console.error("Error loading products:", err);
-  }
-  renderProducts();
-  updateCart();
-}
-
 function characterArt(figure) {
   if (figure.image) {
     return `
@@ -155,6 +134,26 @@ function showToast(message) {
   setTimeout(() => \$("#toast").classList.remove("visible"), 2200);
 }
 
+async function fetchStoreProducts() {
+  try {
+    const snapshot = await get(ref(db, 'products'));
+    figures = [];
+    if (snapshot.exists()) {
+      snapshot.forEach((childSnapshot) => {
+        const productData = childSnapshot.val();
+        figures.push({
+          id: childSnapshot.key,
+          ...productData
+        });
+      });
+    }
+  } catch (err) {
+    console.error("Error loading products:", err);
+  }
+  renderProducts();
+  updateCart();
+}
+
 \$("#products").addEventListener("click", event => {
   const button = event.target.closest("[data-add]");
   if (!button) return;
@@ -206,5 +205,5 @@ function showToast(message) {
   showToast("Demo checkout — no payment taken.");
 });
 
-// Kick off fetching products from Firebase on load
+// Run fetch after everything is defined
 fetchStoreProducts();
