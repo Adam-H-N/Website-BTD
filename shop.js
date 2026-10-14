@@ -21,20 +21,11 @@ const money = amount => "AED " + amount.toLocaleString("en-US");
 let activeFilter = "All";
 const cart = {};
 let figures = [];
-
 function characterArt(figure) {
   if (figure.image) {
-    return `<img class="product-image" src="${figure.image}" alt="${figure.name} anime figure">`;
+    return '<img class="product-image" src="' + figure.image + '" alt="' + figure.name + ' figure">';
   }
-  return `
-    <div class="figure-art" style="--hair:${figure.hair || '#24172d'};--coat:${figure.coat || '#ff5b7d'}">
-      <div class="figure-hair"></div>
-      <div class="figure-face"></div>
-      <div class="figure-eyes"></div>
-      <div class="figure-body"></div>
-      <div class="figure-coat"></div>
-      <div class="figure-base"></div>
-    </div>`;
+  return '<div class="figure-art"><span>' + (figure.emoji || '✦') + '</span></div>';
 }
 
 function renderProducts() {
