@@ -51,18 +51,20 @@ function renderProducts() {
   });
 
   $("#products").innerHTML = filtered.map(function(figure) {
+    const stripeUrl = figure.stripeLink && figure.stripeLink !== "#" ? figure.stripeLink : "#";
+
     return '<article class="product">' +
       '<div class="product-art" style="background:' + (figure.tone || "#30213d") + '">' +
         '<span class="tag">' + (figure.tag || "Item") + "</span>" +
-        '<button class="add-button" data-add="' + figure.id + '">+ Add</button>' +
+        '<button class="add-button" data-add="' + figure.id + '">+ Bag</button>' +
         characterArt(figure) +
       "</div>" +
       '<div class="product-info">' +
         '<span class="series">' + (figure.series || "") + "</span>" +
         "<h3>" + figure.name + "</h3>" +
-        '<div class="product-bottom">' +
+        '<div class="product-bottom" style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">' +
           "<strong>" + money(Number(figure.price)) + "</strong>" +
-          "<span>" + (figure.emoji || "✦") + "</span>" +
+          '<a href="' + stripeUrl + '" target="_blank" class="primary" style="padding: 6px 12px; font-size: 11px; text-decoration: none;">Buy Now ↗</a>' +
         "</div>" +
       "</div>" +
     "</article>";
@@ -186,7 +188,7 @@ $("#cartItems").addEventListener("click", function(event) {
 });
 
 $("#checkout").addEventListener("click", function() {
-  showToast("Demo checkout — no payment taken.");
+  showToast("Demo checkout — use individual Buy Now buttons for payments.");
 });
 
 fetchStoreProducts();
