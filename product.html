@@ -43,9 +43,8 @@
       mix-blend-mode: multiply;
       transition: border-color .2s;
     }
-    .thumb.active, .thumb:hover {
-      border-color: var(--accent);
-    }
+    .thumb.active, .thumb:hover { border-color: var(--accent); }
+    @media (max-width: 800px) { .product-detail-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -53,7 +52,7 @@
   
   <header class="header">
     <a class="brand" href="index.html">
-      <img class="brand-logo" src="logo.jpeg" alt="BTD District logo">
+      <img class="brand-logo" src="logo.jpeg" alt="Logo">
       <span>BTD District</span>
     </a>
     <nav>
@@ -65,7 +64,6 @@
     <div id="loading" class="empty">Loading figure details...</div>
     
     <div id="productContainer" class="product-detail-grid" hidden>
-      <!-- Left: Image Gallery -->
       <div>
         <div class="main-image-box">
           <img id="mainImg" src="" alt="Product Showcase">
@@ -73,12 +71,11 @@
         <div id="thumbList" class="thumbnail-list"></div>
       </div>
 
-      <!-- Right: Product Details -->
       <div style="padding-top: 20px;">
         <span class="eyebrow" id="pSeries">SERIES</span>
         <h1 id="pName" style="margin: 10px 0 15px; font-size: 42px;">Product Title</h1>
         <h2 id="pPrice" style="color: var(--accent); margin-bottom: 25px; font-size: 32px;">AED 0</h2>
-        <p id="pDesc" class="content-copy" style="margin-bottom: 30px;">Authentic collectible figure from BTD District vault collection.</p>
+        <p class="content-copy" style="margin-bottom: 30px;">Authentic collectible figure sourced directly from the BTD District vault collection.</p>
         
         <div style="display: flex; gap: 15px;">
           <a id="buyNowBtn" href="#" target="_blank" class="primary" style="padding: 16px 32px; font-size: 16px;">Buy Now Direct ↗</a>
@@ -101,7 +98,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Get product ID from URL query string
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
 
@@ -123,7 +119,6 @@
         document.getElementById('pPrice').textContent = `AED ${data.price}`;
         document.getElementById('buyNowBtn').href = data.stripeLink || '#';
 
-        // Parse multiple images (comma-separated URLs)
         const images = data.images 
           ? data.images.split(',').map(s => s.trim()) 
           : [data.image];
