@@ -24,14 +24,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function fetchProductsFromFirebase() {
   const container = document.getElementById("productsGrid");
-  if (!container) return;
+  if (!container) {
+    console.error("❌ ERROR: 'productsGrid' element not found in index.html!");
+    return;
+  }
   
   container.innerHTML = "<p class='empty'>Loading vault figures...</p>";
 
   try {
-    const snapshot = await get(ref(db, 'products'));
+    const dbRef = ref(db, 'products');
+    const snapshot = await get(dbRef);
+    
+    console.log("🔍 Firebase Snapshot Exists?", snapshot.exists());
+    
     if (!snapshot.exists()) {
-      container.innerHTML = "<p class='empty'>No figures published yet. Check back soon!</p>";
+      console.warn("⚠️ Database connected, but 'products' node is empty!");
+      container.innerHTML = "<p class='empty'>No figures published yet. Use admin panel to add some!</p>";
       return;
     }
 
@@ -40,8 +48,10 @@ async function fetchProductsFromFirebase() {
       allProducts[childSnapshot.key] = childSnapshot.val();
     });
 
+    console.log("✅ Loaded Products Object:", allProducts);
     renderProducts(allProducts);
   } catch (err) {
+    console.error("❌ Firebase Fetch Error:", err);
     container.innerHTML = "<p class='empty'>Error loading products from database.</p>";
   }
 }
