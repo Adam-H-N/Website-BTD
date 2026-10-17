@@ -11,7 +11,7 @@
   
   <header class="header">
     <a class="brand" href="index.html">
-      <img class="brand-logo" src="logo.jpeg" alt="BTD District logo">
+      <img class="brand-logo" src="logo.jpeg" alt="Logo">
       <span>BTD District Admin</span>
     </a>
     <nav>
@@ -21,30 +21,24 @@
 
   <main class="container" style="max-width: 950px; padding: 40px 20px;">
     
-    <!-- Login Card -->
     <div id="authSection" class="info-card">
       <span class="eyebrow">RESTRICTED ACCESS</span>
       <h2 style="margin-top: 5px;">Vault Master Login</h2>
-      <p class="content-copy">Log in to manage your inventory, direct drops, and customer sales.</p>
+      <p class="content-copy">Log in to manage your inventory and customer sales.</p>
       
       <form id="loginForm" class="contact-form" style="max-width: 100%; margin: 20px 0 0;">
-        <label>
-          Admin Email
+        <label>Admin Email
           <input type="email" id="adminEmail" placeholder="admin@btddistrict.com" required>
         </label>
-        <label>
-          Password
+        <label>Password
           <input type="password" id="adminPassword" placeholder="••••••••" required>
         </label>
         <button class="primary" type="submit">Unlock Dashboard ↗</button>
       </form>
     </div>
 
-    <!-- Main Dashboard -->
     <div id="dashboardSection" hidden>
-      
-      <!-- Top Bar -->
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
         <div>
           <span class="eyebrow">VAULT CONTROL CENTER</span>
           <h1 style="margin: 5px 0 0; font-size: 32px;">Welcome back, Admin</h1>
@@ -52,11 +46,10 @@
         <button id="logoutBtn" class="filter" style="background: var(--surface2); color: var(--text);">Sign Out</button>
       </div>
 
-      <!-- Quick Analytics Metrics -->
       <section class="info-grid" style="margin: 0 0 30px; grid-template-columns: repeat(3, 1fr);">
         <article class="info-card" style="padding: 16px;">
           <small style="color: var(--muted); text-transform: uppercase; font-size: 10px; font-weight: 800;">Total Active Items</small>
-          <h2 id="statProductsCount" style="margin: 8px 0 0; font-size: 28px; color: var(--lime);">0</h2>
+          <h2 id="statProductsCount" style="margin: 8px 0 0; font-size: 28px; color: var(--accent);">0</h2>
         </article>
         <article class="info-card" style="padding: 16px;">
           <small style="color: var(--muted); text-transform: uppercase; font-size: 10px; font-weight: 800;">Total Orders</small>
@@ -68,16 +61,12 @@
         </article>
       </section>
 
-      <!-- Navigation Tabs -->
       <div class="filters" style="margin-bottom: 25px;">
         <button class="filter active" id="btnTabInventory">📦 Manage Inventory</button>
         <button class="filter" id="btnTabOrders">📜 Customer Orders</button>
       </div>
 
-      <!-- TAB 1: INVENTORY MANAGEMENT -->
       <div id="tabInventoryView">
-        
-        <!-- Add Product Form Card -->
         <form id="addProductForm" class="info-card" style="display: grid; gap: 15px; margin-bottom: 35px; border: 1px solid var(--line);">
           <div style="border-bottom: 1px solid var(--line); padding-bottom: 10px;">
             <h3 style="margin: 0;">Add New Figure / Drop</h3>
@@ -85,40 +74,33 @@
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <label style="font-size: 12px; font-weight: 800;">
-              Figure Name
+            <label style="font-size: 12px; font-weight: 800;">Figure Name
               <input type="text" id="pName" placeholder="e.g. Eren Yeager" required style="width: 100%; margin-top: 6px; padding: 11px; background: var(--bg); border: 1px solid var(--line); color: var(--text); border-radius: 10px;">
             </label>
-            <label style="font-size: 12px; font-weight: 800;">
-              Series / Anime
+            <label style="font-size: 12px; font-weight: 800;">Series / Anime
               <input type="text" id="pSeries" placeholder="e.g. Attack on Titan" required style="width: 100%; margin-top: 6px; padding: 11px; background: var(--bg); border: 1px solid var(--line); color: var(--text); border-radius: 10px;">
             </label>
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <label style="font-size: 12px; font-weight: 800;">
-              Price (AED)
+            <label style="font-size: 12px; font-weight: 800;">Price (AED)
               <input type="number" id="pPrice" placeholder="189" required style="width: 100%; margin-top: 6px; padding: 11px; background: var(--bg); border: 1px solid var(--line); color: var(--text); border-radius: 10px;">
             </label>
-            <label style="font-size: 12px; font-weight: 800;">
-              Tag / Badge
+            <label style="font-size: 12px; font-weight: 800;">Tag / Badge
               <select id="pTag" style="width: 100%; margin-top: 6px; padding: 11px; background: var(--bg); border: 1px solid var(--line); color: var(--text); border-radius: 10px;">
                 <option value="New drop">New drop</option>
                 <option value="Best seller">Best seller</option>
                 <option value="Limited">Limited</option>
                 <option value="Fan favourite">Fan favourite</option>
-                <option value="Under AED 200">Under AED 200</option>
               </select>
             </label>
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <label style="font-size: 12px; font-weight: 800;">
-              Image Filename or URL
-              <input type="text" id="pImage" placeholder="e.g. eren.png or https://..." required style="width: 100%; margin-top: 6px; padding: 11px; background: var(--bg); border: 1px solid var(--line); color: var(--text); border-radius: 10px;">
+            <label style="font-size: 12px; font-weight: 800;">Image URLs (Comma separated for multiple images)
+              <input type="text" id="pImage" placeholder="e.g. img1.png, img2.png" required style="width: 100%; margin-top: 6px; padding: 11px; background: var(--bg); border: 1px solid var(--line); color: var(--text); border-radius: 10px;">
             </label>
-            <label style="font-size: 12px; font-weight: 800;">
-              Stripe Payment Link URL
+            <label style="font-size: 12px; font-weight: 800;">Stripe Payment Link URL
               <input type="url" id="pStripeLink" placeholder="https://buy.stripe.com/..." style="width: 100%; margin-top: 6px; padding: 11px; background: var(--bg); border: 1px solid var(--line); color: var(--text); border-radius: 10px;">
             </label>
           </div>
@@ -126,7 +108,6 @@
           <button class="primary" type="submit" style="margin-top: 10px;">Publish to Storefront ↗</button>
         </form>
 
-        <!-- Live Inventory List -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
           <h3>Live Vault Inventory</h3>
           <small id="inventoryCountText" style="color: var(--muted);">Loading items...</small>
@@ -134,7 +115,6 @@
         <div id="adminProductList" style="display: grid; gap: 12px;"></div>
       </div>
 
-      <!-- TAB 2: ORDERS MANAGEMENT -->
       <div id="tabOrdersView" hidden>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
           <h3>Customer Orders & Deliveries</h3>
@@ -146,13 +126,6 @@
     </div>
   </main>
 
-  <footer class="footer">
-    <a class="brand" href="index.html">✦ BTD District</a>
-    <span>Internal Admin Control Panel</span>
-    <span>© 2026 BTD District</span>
-  </footer>
-
-  <!-- Firebase Script Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -162,23 +135,17 @@
       apiKey: "AIzaSyDfc_66w7wE1pJ0q-njX6tQVFM1IR_l9zw",
       authDomain: "btd-anime.firebaseapp.com",
       databaseURL: "https://btd-anime-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "btd-anime",
-      storageBucket: "btd-anime.firebasestorage.app",
-      messagingSenderId: "822260127443",
-      appId: "1:822260127443:web:1300428ba96f30c938a626"
+      projectId: "btd-anime"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    // Authentication Handling
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const email = document.getElementById("adminEmail").value;
-      const pass = document.getElementById("adminPassword").value;
       try {
-        await signInWithEmailAndPassword(auth, email, pass);
+        await signInWithEmailAndPassword(auth, document.getElementById("adminEmail").value, document.getElementById("adminPassword").value);
       } catch (err) {
         alert("Authentication failed: " + err.message);
       }
@@ -197,7 +164,6 @@
       }
     });
 
-    // Tab Navigation Logic
     const btnTabInventory = document.getElementById("btnTabInventory");
     const btnTabOrders = document.getElementById("btnTabOrders");
     const tabInventoryView = document.getElementById("tabInventoryView");
@@ -217,19 +183,19 @@
       tabInventoryView.hidden = true;
     });
 
-    // Add Product Function
     document.getElementById("addProductForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       try {
-        const productsRef = ref(db, 'products');
-        const newProductRef = push(productsRef);
+        const rawImages = document.getElementById("pImage").value;
+        const newProductRef = push(ref(db, 'products'));
         
         await set(newProductRef, {
           name: document.getElementById("pName").value,
           series: document.getElementById("pSeries").value,
           price: Number(document.getElementById("pPrice").value),
           tag: document.getElementById("pTag").value,
-          image: document.getElementById("pImage").value,
+          image: rawImages.split(',')[0].trim(),
+          images: rawImages,
           stripeLink: document.getElementById("pStripeLink").value || "#",
           createdAt: Date.now()
         });
@@ -242,18 +208,9 @@
       }
     });
 
-    // Load All Dashboard Data
     async function loadDashboardData() {
-      await loadAdminProducts();
-      await loadAdminOrders();
-    }
-
-    // Load Products into Admin Panel
-    async function loadAdminProducts() {
-      const container = document.getElementById("adminProductList");
-      container.innerHTML = "<p class='empty'>Loading inventory...</p>";
-      
       const snapshot = await get(ref(db, 'products'));
+      const container = document.getElementById("adminProductList");
       
       if (!snapshot.exists()) {
         container.innerHTML = "<p class='empty'>No figures published yet.</p>";
@@ -269,6 +226,7 @@
         count++;
         const prod = childSnapshot.val();
         const id = childSnapshot.key;
+        const firstImg = prod.images ? prod.images.split(',')[0].trim() : prod.image;
 
         const row = document.createElement("div");
         row.className = "info-card";
@@ -277,90 +235,28 @@
         row.style.alignItems = "center";
         row.style.padding = "16px";
 
-        const stripeBadge = (prod.stripeLink && prod.stripeLink !== "#") 
-          ? `<span style="color:var(--lime); font-size:10px; font-weight:800; background:#b7f36b22; padding:3px 6px; border-radius:5px;">Stripe Connected ✓</span>` 
-          : `<span style="color:var(--muted); font-size:10px; font-weight:800;">No Stripe Link</span>`;
-
         row.innerHTML = `
           <div style="display:flex; align-items:center; gap:15px;">
-            <img src="${prod.image}" alt="${prod.name}" style="width:48px; height:48px; object-fit:contain; background:var(--bg); border-radius:8px; padding:4px;">
+            <img src="${firstImg}" alt="${prod.name}" style="width:48px; height:48px; object-fit:contain; border-radius:8px;">
             <div>
               <strong>${prod.name}</strong> <small style="color:var(--muted);">(${prod.series})</small><br>
-              <span style="color:var(--accent); font-weight:800;">AED ${prod.price}</span> · 
-              <small style="color:var(--muted);">${prod.tag}</small> · 
-              ${stripeBadge}
+              <span style="color:var(--accent); font-weight:800;">AED ${prod.price}</span>
             </div>
           </div>
           <button class="filter" style="background:#ff4e75; color:white; border:0; font-weight:800;" data-delete="${id}">Remove</button>
         `;
         
         row.querySelector("[data-delete]").addEventListener("click", async () => {
-          if (confirm(`Remove ${prod.name} from the live store?`)) {
+          if (confirm(`Remove ${prod.name} from store?`)) {
             await remove(ref(db, `products/${id}`));
             loadDashboardData();
           }
         });
-
         container.appendChild(row);
       });
 
       document.getElementById("statProductsCount").textContent = count.toString();
       document.getElementById("inventoryCountText").textContent = `${count} item(s) live`;
-    }
-
-    // Load Customer Orders
-    async function loadAdminOrders() {
-      const container = document.getElementById("adminOrderList");
-      container.innerHTML = "<p class='empty'>Loading orders...</p>";
-      
-      const snapshot = await get(ref(db, 'orders'));
-      
-      if (!snapshot.exists()) {
-        container.innerHTML = `
-          <div class="info-card" style="text-align:center; padding:30px;">
-            <p class="empty" style="padding:0;">No orders recorded in database yet.</p>
-            <small style="color:var(--muted);">Note: Orders placed directly through Stripe Payment Links can also be viewed instantly on your <a href="https://dashboard.stripe.com/payments" target="_blank" style="color:var(--accent); text-decoration:underline;">Stripe Payments Dashboard</a>.</small>
-          </div>`;
-        document.getElementById("statOrdersCount").textContent = "0";
-        document.getElementById("statRevenue").textContent = "AED 0";
-        return;
-      }
-
-      let totalOrders = 0;
-      let totalRevenue = 0;
-      container.innerHTML = "";
-
-      snapshot.forEach((childSnapshot) => {
-        totalOrders++;
-        const order = childSnapshot.val();
-        totalRevenue += Number(order.amount || 0);
-
-        const card = document.createElement("div");
-        card.className = "info-card";
-        card.style.padding = "18px";
-        card.innerHTML = `
-          <div style="display:flex; justify-style:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;">
-            <div>
-              <span class="eyebrow" style="font-size:9px;">ORDER #${childSnapshot.key.slice(-6).toUpperCase()}</span>
-              <h3 style="margin:4px 0;">${order.customerName || 'Customer'}</h3>
-              <small style="color:var(--muted);">${order.customerEmail || 'No email provided'}</small>
-            </div>
-            <div style="text-align:right;">
-              <strong style="color:var(--lime); font-size:18px;">AED ${order.amount}</strong><br>
-              <small style="color:var(--muted);">${new Date(order.createdAt || Date.now()).toLocaleDateString()}</small>
-            </div>
-          </div>
-          <hr style="border:0; border-top:1px solid var(--line); margin:12px 0;">
-          <div style="font-size:13px; line-height:1.6;">
-            <strong>Items Purchased:</strong> ${order.productName || 'Figure'}<br>
-            <strong>Shipping Address:</strong> ${order.address || 'Check Stripe Dashboard'}
-          </div>
-        `;
-        container.appendChild(card);
-      });
-
-      document.getElementById("statOrdersCount").textContent = totalOrders.toString();
-      document.getElementById("statRevenue").textContent = `AED ${totalRevenue.toLocaleString()}`;
     }
   </script>
 </body>
