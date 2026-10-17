@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product Details — BTD District</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .product-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      margin: 40px 0 80px;
+      align-items: start;
+    }
+    .main-image-box {
+      width: 100%;
+      height: 420px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .main-image-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+    }
+    .thumbnail-list {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      justify-content: center;
+    }
+    .thumb {
+      width: 70px;
+      height: 70px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 5px;
+      cursor: pointer;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+      transition: border-color .2s;
+    }
+    .thumb.active, .thumb:hover {
+      border-color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  
+  <header class="header">
+    <a class="brand" href="index.html">
+      <img class="brand-logo" src="logo.jpeg" alt="BTD District logo">
+      <span>BTD District</span>
+    </a>
+    <nav>
+      <a href="index.html">← Back to Shop</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div id="loading" class="empty">Loading figure details...</div>
+    
+    <div id="productContainer" class="product-detail-grid" hidden>
+      <!-- Left: Image Gallery -->
+      <div>
+        <div class="main-image-box">
+          <img id="mainImg" src="" alt="Product Showcase">
+        </div>
+        <div id="thumbList" class="thumbnail-list"></div>
+      </div>
+
+      <!-- Right: Product Details -->
+      <div style="padding-top: 20px;">
+        <span class="eyebrow" id="pSeries">SERIES</span>
+        <h1 id="pName" style="margin: 10px 0 15px; font-size: 42px;">Product Title</h1>
+        <h2 id="pPrice" style="color: var(--accent); margin-bottom: 25px; font-size: 32px;">AED 0</h2>
+        <p id="pDesc" class="content-copy" style="margin-bottom: 30px;">Authentic collectible figure from BTD District vault collection.</p>
+        
+        <div style="display: flex; gap: 15px;">
+          <a id="buyNowBtn" href="#" target="_blank" class="primary" style="padding: 16px 32px; font-size: 16px;">Buy Now Direct ↗</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDfc_66w7wE1pJ0q-njX6tQVFM1IR_l9zw",
+      authDomain: "btd-anime.firebaseapp.com",
+      databaseURL: "https://btd-anime-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "btd-anime"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Get product ID from URL query string
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+
+    if (!productId) {
+      document.getElementById('loading').textContent = "Product not found.";
+    } else {
+      get(ref(db, `products/${productId}`)).then((snapshot) => {
+        if (!snapshot.exists()) {
+          document.getElementById('loading').textContent = "Product not found.";
+          return;
+        }
+
+        const data = snapshot.val();
+        document.getElementById('loading').hidden = true;
+        document.getElementById('productContainer').hidden = false;
+
+        document.getElementById('pName').textContent = data.name;
+        document.getElementById('pSeries').textContent = data.series || 'ANIME COLLECTION';
+        document.getElementById('pPrice').textContent = `AED ${data.price}`;
+        document.getElementById('buyNowBtn').href = data.stripeLink || '#';
+
+        // Parse multiple images (comma-separated URLs)
+        const images = data.images 
+          ? data.images.split(',').map(s => s.trim()) 
+          : [data.image];
+
+        const mainImg = document.getElementById('mainImg');
+        mainImg.src = images[0];
+
+        const thumbList = document.getElementById('thumbList');
+        thumbList.innerHTML = '';
+
+        if (images.length > 1) {
+          images.forEach((imgUrl, idx) => {
+            const thumb = document.createElement('img');
+            thumb.className = `thumb ${idx === 0 ? 'active' : ''}`;
+            thumb.src = imgUrl;
+            thumb.addEventListener('click', () => {
+              mainImg.src = imgUrl;
+              document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+              thumb.classList.add('active');
+            });
+            thumbList.appendChild(thumb);
+          });
+        }
+      });
+    }
+  </script>
+</body>
+</html>
