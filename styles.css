@@ -155,8 +155,8 @@ h1 em { color: var(--accent); font-style: normal; }
 
 .hero-product-image {
   position: absolute;
-  width: 220%;
-  height: 220%;
+  width: 150%;
+  height: 150%;
   left: 50%;
   top: 30%;
   transform: translate(-50%, -50%);
