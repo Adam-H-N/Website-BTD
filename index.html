@@ -1,132 +1,101 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<style>
-  .product-art {
-  background: transparent !important;
-}
-.product-art::before {
-  display: none !important;
-}
-</style>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#111016">
-  <title>BTD District — Anime Figures</title>
+  <title>BTD District — Vault & Collectible Figures</title>
   <link rel="stylesheet" href="styles.css">
-  <script type="module" src="shop.js"></script>
 </head>
 <body>
   <div class="topline"></div>
 
+  <!-- Header Navigation -->
   <header class="header">
     <a class="brand" href="index.html">
-  
-    <a class="brand" href="index.html" aria-label="BTD District home">
-    <img class="brand-logo" src="logo.jpeg" alt="BTD District logo">
-    <span>BTD District</span>
-  </a>
-
+      <img class="brand-logo" src="logo.jpeg" alt="BTD District logo">
+      <span>BTD District</span>
+    </a>
     <nav>
-      <a class="active" href="index.html">Shop</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+      <a href="index.html" class="active">Shop</a>
+      <a href="admin.html">Admin</a>
     </nav>
-
-    <label class="search">
-      <span>⌕</span>
-      <input id="search" type="search" placeholder="Search figures…">
-    </label>
-
-    <button class="bag" id="cartOpen">
+    <div class="search">
+      <input type="text" placeholder="Search figures..." id="searchInput">
+    </div>
+    <button class="bag" id="bagBtn">
       Bag <span id="cartCount">0</span>
     </button>
   </header>
 
   <main class="container">
+    <!-- Hero Banner Section -->
     <section class="hero">
       <div class="hero-copy">
-        <span class="eyebrow">YOUR NEXT GRAIL AWAITS</span>
-        <h1>Fictional worlds.<br><em>Real obsession.</em></h1>
-        <p>
-          Bring your favourite characters home. Discover display-worthy
-          figures, iconic heroes and collectibles made for your shelf.
-        </p>
-        <a class="primary" href="#shop">Explore the collection ↗</a>
-        <small>✦ Curated for collectors, made for your shelf.</small>
+        <span class="eyebrow">COLLECTOR VAULT</span>
+        <h1>Rare Anime <em>Figures</em> & Drops</h1>
+        <p>Explore exclusive, hand-picked vinyl figures and limited collector editions. Securely packaged and shipped directly to your door.</p>
+        <a href="#shop" class="primary">Explore Vault ↗</a>
       </div>
-    <div class="hero-art">
+      <div class="hero-art">
         <div class="orbit"></div>
-        <div class="hero-character">
-          <img
-              class="hero-product-image"
-              src="trio.png"
-              alt="Collector edition anime figure"
-            >
-        </div>
-        <span class="art-label">THE COLLECTOR EDITION</span>
-        <span class="art-price">From AED 149</span>
+        <img class="hero-product-image" src="trio.png" alt="Collector Figure">
+        <div class="art-label">Limited Vault Edition</div>
+        <div class="art-price">AED 299</div>
       </div>
     </section>
-    
 
-    <section id="shop" class="shop-section">
+    <!-- Shop Grid Section (WHERE PRODUCTS LOAD) -->
+    <section class="shop-section" id="shop">
       <div class="section-heading">
-        <div>
-          <span class="eyebrow">THE VAULT COLLECTION</span>
-          <h2>Find your main character.</h2>
-          <p>Small details. Big main-character energy.</p>
-        </div>
+        <span class="eyebrow">LIVE INVENTORY</span>
+        <h2>Available Figures</h2>
       </div>
 
-      <div class="filters" id="filters">
-        <button class="filter active" data-filter="All">All figures</button>
-        <button class="filter" data-filter="New drop">New drops</button>
-        <button class="filter" data-filter="Best seller">Best sellers</button>
-        <button class="filter" data-filter="Under AED 200">Under AED 200</button>
+      <!-- THIS ID IS REQUIRED FOR shop.js TO WORK -->
+      <div id="productsGrid" class="product-grid">
+        <p class="empty">Loading vault figures...</p>
       </div>
-
-      <div id="products" class="product-grid"></div>
-      <p id="empty" class="empty" hidden>
-        No figures found. Try another search ✦
-      </p>
     </section>
 
+    <!-- Promotional Callout -->
     <section class="promo">
       <div>
-        <h2>Your shelf called.</h2>
-        <p>It wants a glow-up. Find your next favourite.</p>
+        <span class="eyebrow" style="color:var(--accent);">AUTHENTIC GUARANTEE</span>
+        <h2 style="margin: 8px 0;">Collector Grade Quality</h2>
+        <p>All figures are verified authentic, brand new in box, and carefully handled.</p>
       </div>
-      <a class="primary light-button" href="gallery.html">Explore the gallery ↗</a>
+      <a href="admin.html" class="primary light-button">Admin Access ↗</a>
     </section>
   </main>
 
+  <!-- Footer -->
   <footer class="footer">
     <a class="brand" href="index.html">✦ BTD District</a>
-    <span>Demo store · Prices shown in AED</span>
+    <span>Curated Collector Figures</span>
     <span>© 2026 BTD District</span>
   </footer>
 
-  <div class="toast" id="toast" role="status"></div>
-
-  <div class="overlay" id="overlay">
-    <aside class="cart-panel">
+  <!-- Slide-out Shopping Bag Drawer Overlay -->
+  <div class="overlay" id="cartOverlay">
+    <div class="cart-panel">
       <div class="cart-heading">
-        <h2>Your vault bag</h2>
-        <button class="close" id="cartClose" aria-label="Close bag">×</button>
+        <h2>Your Shopping Bag</h2>
+        <button class="close" id="closeCart">&times;</button>
       </div>
-      <div id="cartItems" class="cart-items"></div>
+      <div class="cart-items" id="cartItems">
+        <p class="empty">Your bag is empty.</p>
+      </div>
       <div class="cart-total">
         <div class="total-line">
-          <span>Subtotal</span>
-          <strong id="subtotal">AED 0</strong>
+          <span>Total</span>
+          <strong id="cartTotal" style="font-size: 20px; color: var(--accent);">AED 0</strong>
         </div>
-        <button class="primary full-width" id="checkout">Demo checkout ↗</button>
-        <small>Demo only — no payment will be taken.</small>
+        <button class="primary full-width" onclick="alert('Proceeding to Checkout...')">Secure Checkout ↗</button>
       </div>
-    </aside>
+    </div>
   </div>
+
+  <!-- Storefront JavaScript Logic -->
+  <script type="module" src="shop.js"></script>
 </body>
 </html>
