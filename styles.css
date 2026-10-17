@@ -177,18 +177,32 @@ h1 em { color: var(--accent); font-style: normal; }
 
 .product-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px 16px; }
 .product-art { 
-  height: 245px; 
+  height: 260px; 
   border-radius: 17px; 
-  background: var(--surface) !important; 
-  border: 1px solid var(--line);
+  background: transparent !important; 
+  border: none !important;
   position: relative; 
   display: grid; 
   place-items: center; 
   overflow: hidden; 
-  transition: border-color .2s;
+  cursor: pointer;
 }
-.product:hover .product-art { border-color: var(--accent); }
-.product-art::before { display: none; }
+
+/* Ensure images float borderless */
+.product-image {
+  position: relative;
+  z-index: 1;
+  width: 90%;
+  height: 90%;
+  padding: 0;
+  object-fit: contain;
+  mix-blend-mode: multiply; /* Blends white photo backgrounds into page background */
+  transition: transform 0.25s ease;
+}
+
+.product:hover .product-image { 
+  transform: translateY(-6px) scale(1.04); 
+}
 
 .tag { position: absolute; top: 11px; left: 11px; z-index: 2; padding: 6px 8px; border-radius: 7px; background: var(--bg); border: 1px solid var(--line); color: var(--accent); font-size: 9px; font-weight: 900; }
 .add-button { position: absolute; bottom: 10px; right: 10px; z-index: 3; background: var(--bg); border: 1px solid var(--line); font-weight: 900; }
